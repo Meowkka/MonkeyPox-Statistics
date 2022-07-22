@@ -1,6 +1,11 @@
 # read_csv
 
 A new Flutter project.
+Only for train myself in flutter.
+
+Using csv data from https://github.com/globaldothealth/monkeypox
+
+Read Data from csv, and show to UI total cases
 
 ## Getting Started
 
