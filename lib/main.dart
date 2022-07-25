@@ -1,15 +1,12 @@
 // main.dart
 import 'dart:convert';
-import 'dart:ffi';
 
 import 'package:csv/csv.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'dart:async';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:read_csv/func.dart';
 import 'package:intl/intl.dart';
 
@@ -65,7 +62,6 @@ class _HomePageState extends State<HomePage> {
     final myFile = File('$dirPath/tmp.csv');
     final myData = await myFile.readAsString(encoding: utf8);
     print('Myfile');
-    //var myData = await rootBundle.loadString("$dirPath/tmp.csv");
     List<List<dynamic>> csvTable = await CsvToListConverter(eol: '\n').convert(myData);
     print('Ready');
     //
@@ -89,17 +85,19 @@ class _HomePageState extends State<HomePage> {
         )
     );
     List<String> data = [];
-    DateTime now = DateTime.now();
-    String formattedDate = DateFormat('yyyy-MM-dd').format(now);
+    DateTime now = DateTime.parse('2000-01-01 00:00:00.000');
+    print(now);
     csvTable.forEach((value) {
-      if(value[0]==formattedDate) {
+      if(cnt>0){
+        if(DateTime.parse(value[0]).isAfter(now)) {
+          now = DateTime.parse(value[0]);
+        }
+      }else{
         cnt++;
       }
     });
-    if (cnt==0){
-      DateTime now = DateTime.now().subtract(Duration(days:1));
-      formattedDate = DateFormat('yyyy-MM-dd').format(now);
-    }
+    String formattedDate = DateFormat('yyyy-MM-dd').format(now);
+    print(formattedDate);
     csvTable.forEach((value) {
       if(value[0]==formattedDate){
         print(value[3].toString());
